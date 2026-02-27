@@ -13,6 +13,15 @@ const Login = () => {
   const [password, setPasword] = useState('')
   const [email, setEmail] = useState('')
 
+  const demoEmail = import.meta.env.VITE_ADMIN_EMAIL
+  const demoPassword = import.meta.env.VITE_ADMIN_PASSWORD
+
+  const useDemoCredentials = () => {
+    setEmail(demoEmail)
+    setPasword(demoPassword)
+    toast.info('Demo credentials filled. Click Admin Sign In to continue.')
+  }
+
   const onSubmitHandler = async (event) => {
     event.preventDefault();
     try {
@@ -118,6 +127,16 @@ const Login = () => {
       <button className='bg-black text-white font-light px-8 py-2 mt-4 hover:bg-gray-600 w-full'>
         {loginMode === 'admin' ? 'Admin Sign In' : (currentState === 'Login' ? 'Sign In' : 'Sign Up')}
       </button>
+
+      {loginMode === 'admin' && demoEmail && demoPassword && (
+        <button
+          type='button'
+          onClick={useDemoCredentials}
+          className='bg-gray-200 text-black font-light px-8 py-2 mt-2 hover:bg-gray-300 w-full'
+        >
+          Use Demo Credentials
+        </button>
+      )}
     </form>
   )
 }

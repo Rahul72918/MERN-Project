@@ -14,7 +14,7 @@ export const currency = '₹'
 
 const App = () => {
 
-  const [token, setToken] = useState(localStorage.getItem('token')?localStorage.getItem('token'):'');
+  const [token, setToken] = useState(localStorage.getItem('token') ? localStorage.getItem('token') : '');
 
   useEffect(() => {
     // Check if token is in URL (from login redirect)
@@ -29,9 +29,9 @@ const App = () => {
     }
   }, []);
 
-  useEffect(()=>{
-    localStorage.setItem('token',token)
-  },[token])
+  useEffect(() => {
+    localStorage.setItem('token', token)
+  }, [token])
 
   return (
     <div className='bg-white min-h-screen'>
