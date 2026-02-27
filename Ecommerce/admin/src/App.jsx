@@ -16,6 +16,19 @@ const App = () => {
 
   const [token, setToken] = useState(localStorage.getItem('token')?localStorage.getItem('token'):'');
 
+  useEffect(() => {
+    // Check if token is in URL (from login redirect)
+    const urlParams = new URLSearchParams(window.location.search);
+    const tokenFromUrl = urlParams.get('token');
+
+    if (tokenFromUrl) {
+      localStorage.setItem('token', tokenFromUrl);
+      setToken(tokenFromUrl);
+      // Remove token from URL for security
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+  }, []);
+
   useEffect(()=>{
     localStorage.setItem('token',token)
   },[token])

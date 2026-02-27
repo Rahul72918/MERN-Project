@@ -20,11 +20,11 @@ const Login = () => {
         const response = await axios.post(backendUrl + '/api/user/admin', { email, password });
 
         if (response.data.success) {
-          localStorage.setItem('token', response.data.token);
           toast.success('Admin login successful!');
 
-          const adminUrl = import.meta.env.VITE_ADMIN_URL;
-          window.location.href = adminUrl;
+          const adminUrl = import.meta.env.VITE_ADMIN_URL || 'http://localhost:5174';
+          const tokenParam = encodeURIComponent(response.data.token);
+          window.location.href = `${adminUrl}?token=${tokenParam}`;
 
         } else {
           toast.error(response.data.message);
