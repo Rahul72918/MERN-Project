@@ -4,24 +4,26 @@ import toast from 'react-hot-toast'
 
 
 const initialState = {
-    value: null
+    value: null,
+    loading: false,
+    error: null
 }
 
 export const fetchUser = createAsyncThunk('user/fetchUser', async (token) => {
     const { data } = await api.get('/api/user/data', {
-        headers: {Authorization: `Bearer ${token}`}
+        headers: { Authorization: `Bearer ${token}` }
     })
     return data.success ? data.user : null
 })
 
-export const updateUser = createAsyncThunk('user/update', async ({userData ,token}) => {
+export const updateUser = createAsyncThunk('user/update', async ({ userData, token }) => {
     const { data } = await api.post('/api/user/update', userData, {
-        headers: {Authorization: `Bearer ${token}`}
+        headers: { Authorization: `Bearer ${token}` }
     })
-    if(data.success){
+    if (data.success) {
         toast.success(data.message)
         return data.user
-    }else{
+    } else {
         toast.error(data.message)
         return null
     }
@@ -34,12 +36,34 @@ const userSlice = createSlice({
     reducers: {
 
     },
-    extraReducers: (builder)=>{
-        builder.addCase(fetchUser.fulfilled, (state, action)=>{
-            state.value = action.payload
-        }).addCase(updateUser.fulfilled, (state, action)=>{
-            state.value = action.payload
-        })
+    extraReducers: (builder) => {
+        builder
+            .addCase(fetchUser.pending, (state) => {
+                state.loading = true
+                state.error = null
+            })
+            .addCase(fetchUser.fulfilled, (state, action) => {
+                state.value = action.payload
+                state.loading = false
+                state.error = null
+            })
+            .addCase(fetchUser.rejected, (state, action) => {
+                state.loading = false
+                state.error = action.error.message
+            })
+            .addCase(updateUser.pending, (state) => {
+                state.loading = true
+                state.error = null
+            })
+            .addCase(updateUser.fulfilled, (state, action) => {
+                state.value = action.payload
+                state.loading = false
+                state.error = null
+            })
+            .addCase(updateUser.rejected, (state, action) => {
+                state.loading = false
+                state.error = action.error.message
+            })
     }
 })
 

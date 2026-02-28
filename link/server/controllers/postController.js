@@ -48,15 +48,13 @@ export const addPost = async (req, res) => {
     }
 }
 
-// Get Posts
+// Get Posts (Updated: Show posts from ALL users)
 export const getFeedPosts = async (req, res) =>{
     try {
-        const { userId } = req.auth()
-        const user = await User.findById(userId)
-
-        // User connections and followings 
-        const userIds = [userId, ...user.connections, ...user.following]
-        const posts = await Post.find({user: {$in: userIds}}).populate('user').sort({createdAt: -1});
+        // Fetch ALL posts instead of only followed users
+        const posts = await Post.find({})
+            .populate('user')
+            .sort({createdAt: -1});
 
         res.json({ success: true, posts})
     } catch (error) {
