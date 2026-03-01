@@ -1,0 +1,23 @@
+# Dependencies
+node_modules/
+
+# Environment files (ignore all .env everywhere)
+.env
+
+# Build outputs
+dist/
+build/
+
+# Logs
+*.log
+
+# Prisma generated client
+server/src/generated/prisma/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor folders
+.vscode/
+.idea/
